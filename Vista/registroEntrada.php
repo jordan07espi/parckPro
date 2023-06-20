@@ -49,9 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['registrarEntrada'])) 
 
         // Guardar el registro en la base de datos
         if ($registro->guardar()) {
-            // Enviar correo con el registro
-            enviarCorreo($persona['correo'], "Se ha registrado la entrada de la persona con ID: " . $persona['id']);
-
+        // Obtener el correo de la persona que se está registrando
+        $correoPersona = obtenerCorreoPersona($_POST['idPersona']);
+        // Enviar correo con la confirmación de salida
+        enviarCorreo( $correoPersona, "Se ha registrado la entrada de su vehiculo");
             // Redirigir a la página de éxito
             header('Location: ../Vista/registroEntrada.php');
             exit();
@@ -64,6 +65,71 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['registrarEntrada'])) 
         $errorMensaje = 'No se proporcionó el ID de persona.';
     }
 }
+
+
+
+function obtenerCorreoPersona($idPersona) {
+    require_once '../Modelo/conexion.php';
+    // Establecer la conexión con la base de datos (debes configurar tus propios datos de conexión)
+    $conn = new mysqli(SERVERNAME, USERNAME, PASSWORD, DBNAME);
+
+    // Verificar si hay errores en la conexión
+    if ($conn->connect_error) {
+        // Error al conectar con la base de datos
+        return null;
+    }
+
+    // Escapar el ID de la persona para prevenir inyección de SQL
+    $idPersona = $conn->real_escape_string($idPersona);
+
+    // Construir la consulta para obtener el correo de la persona
+    $consulta = "SELECT correo FROM persona WHERE id = '$idPersona' LIMIT 1";
+
+    // Ejecutar la consulta
+    $resultado = $conn->query($consulta);
+
+    // Verificar si la consulta fue exitosa
+    if ($resultado && $resultado->num_rows > 0) {
+        // Obtener el resultado de la consulta
+        $fila = $resultado->fetch_assoc();
+
+        // Obtener el correo de la persona
+        $correo = $fila['correo'];
+
+        // Liberar los recursos del resultado y cerrar la conexión
+        $resultado->free();
+        $conn->close();
+
+        return $correo;
+    }
+
+    // No se encontró la persona o hubo un error en la consulta
+    $conn->close();
+    return null;
+
+}
+
+// Función para enviar correo electrónico
+function enviarCorreo($destinatario, $mensaje) {
+    $asunto = "Confirmación de Entrada";
+
+    // Cuerpo del mensaje
+    $cuerpo = "Se ha registrado la entrada. " . $mensaje;
+
+    // Encabezados del correo
+    $headers = "From: jordanespi07@gmail.com" . "\r\n" .
+                "Reply-To: jordanespi07@gmail.com" . "\r\n" .
+                "MIME-Version: 1.0" . "\r\n" .
+                "Content-Type: text/html; charset=UTF-8" . "\r\n";
+
+    // Enviar el correo electrónico
+    if (mail($destinatario, $asunto, $cuerpo, $headers)) {
+        echo "Correo enviado correctamente.";
+    } else {
+        echo "Error al enviar el correo.";
+    }
+}
+
 
 ?>
 
@@ -94,7 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['registrarEntrada'])) 
                     <a class="nav-link active; text-white; fs-5" aria-current="page" href="registroSalidad.php" id="menu">Salida</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active; text-white; fs-5" href="../Asistencia/nuevaAsistencia.php" id="menu">Informe</a>
+                    <a class="nav-link active; text-white; fs-5" href="informe.php" id="menu">Informe</a>
                 </li>
             </ul>
             <ul class="nav nav-pills">
