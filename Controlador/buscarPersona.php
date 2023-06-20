@@ -1,7 +1,6 @@
 <?php
 require_once '../Modelo/conexion.php';
 
-// Leer los datos y visualizarlos en los cuadros de texto para su edicion
 if (isset($_GET['codigoBarras']) && !empty(trim($_GET['codigoBarras']))) {
     $codigoBarras = $_GET['codigoBarras'];
     $query = 'SELECT * FROM persona WHERE codigoBarras = ?';
@@ -14,7 +13,7 @@ if (isset($_GET['codigoBarras']) && !empty(trim($_GET['codigoBarras']))) {
 
             if ($result->num_rows == 1) {
                 $row = $result->fetch_array(MYSQLI_ASSOC);
-
+                $idPersona = $row['Id'];
                 $foto = $row['foto'];
                 $nombres = $row['nombres'];
                 $apellidos = $row['apellidos'];
@@ -23,6 +22,7 @@ if (isset($_GET['codigoBarras']) && !empty(trim($_GET['codigoBarras']))) {
                 $cedula = $row['cedula'];
 
                 session_start();
+                $_SESSION['Id'] = $idPersona;
                 $_SESSION['foto'] = $foto;
                 $_SESSION['nombres'] = $nombres;
                 $_SESSION['apellidos'] = $apellidos;
@@ -30,9 +30,18 @@ if (isset($_GET['codigoBarras']) && !empty(trim($_GET['codigoBarras']))) {
                 $_SESSION['correo'] = $correo;
                 $_SESSION['cedula'] = $cedula;
 
-                header('Location: ../Vista/registroEntrada.php');
+                // Verificar desde qué página se está realizando la búsqueda
+                $referer = $_SERVER['HTTP_REFERER'];
+
+                if (strpos($referer, 'registroSalidad.php') !== false) {
+                    header('Location: ../Vista/registroSalidad.php');
+                } else {
+                    header('Location: ../Vista/registroEntrada.php');
+                }
+
                 exit();
             } else {
+                // No se encontró ninguna persona
                 header('Location: ../Vista/registroEntrada.php');
                 exit();
             }
@@ -49,3 +58,4 @@ if (isset($_GET['codigoBarras']) && !empty(trim($_GET['codigoBarras']))) {
     header('Location: ../Vista/registroEntrada.php');
     exit();
 }
+?>
