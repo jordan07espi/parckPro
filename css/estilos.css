@@ -454,3 +454,9 @@ footer{
         font-size: 20px;
     }
 }
+
+
+.btn-custom {
+    background-color: #e09454;
+    border-color: #e09454;
+}

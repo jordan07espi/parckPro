@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../css/navbar.css">
-    <link rel="stylesheet" href="../../css/formularios.css">
+    <link rel="stylesheet" href="../css/navbar.css">
     <title>Registro de Entrada</title>
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"   crossorigin="anonymous">
@@ -30,23 +29,27 @@
             </ul>
             <ul class="nav nav-pills">
                 <li class="nav-item dropdown; position-absolute top-0 end-0" id="botonBien">
-                    <a class="nav-link dropdown-toggle; fs-5" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" id="menu">Bienvenido</a>
+                    <a class="nav-link dropdown-toggle; fs-5" data-bs-toggle="dropdown" href="../index.html" role="button" aria-expanded="false" id="menu">Salir</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
-
-    <h1>Informe</h1>
-    <table>
-        <thead>
+<br><br>
+<div class="container">
+    <div class="text-center">
+        <h1>Informe de Clientes</h1>
+    </div>
+</div>
+<div id="bordeTable">
+    <table class="table table-striped">
+        <thead class="text-dark" id="tabla">
             <tr>
-                <th>Foto</th>
-                <th>Nombres</th>
-                <th>Apellidos</th>
-                <th>Placa</th>
-                <th>Fecha de Entrada</th>
-                <th>Fecha de Salida</th>
+                <th scope="col">Foto</th>
+                <th scope="col">Nombres y Apellidos</th>
+                <th scope="col">Placa</th>
+                <th scope="col">Fecha de Entrada</th>
+                <th scope="col">Fecha de Salida</th>
             </tr>
         </thead>
         <tbody>
@@ -72,8 +75,7 @@
                 while ($row = $result->fetch_assoc()) {
                     echo '<tr>';
                     echo '<td><img width="100" height="100" src="data:image/jpg;base64,' . base64_encode($row['foto']) . '"></td>';
-                    echo '<td>' . $row['nombres'] . '</td>';
-                    echo '<td>' . $row['apellidos'] . '</td>';
+                    echo '<td>' . $row['nombres'] . ' ' . $row['apellidos'] . '</td>';
                     echo '<td>' . $row['placa'] . '</td>';
                     echo '<td>' . $row['fechaEntrada'] . '</td>';
                     echo '<td>' . $row['fechaSalida'] . '</td>';
@@ -90,5 +92,10 @@
             ?>
         </tbody>
     </table>
+    <div>
+    <button type="button" class="btn btn-primary">Imprimir informe</button>
+    </div>
+</div>
+
 </body>
 </html>
