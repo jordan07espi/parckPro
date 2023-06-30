@@ -151,7 +151,7 @@ function enviarCorreo($destinatario, $mensaje) {
 <nav class="navbar navbar-expand navbar-dark" id="navbar">
     <div class="container-fluid">
         <div class="collapse navbar-collapse" id="navbarScroll">
-            <img src="../../img/Logo.png" alt="" width="100" height="50">
+        <img src="../img/Mesa de trabajo 1.png" alt="" width="50" height="50">
             <ul class="nav nav-pills">
                 <li class="nav-item">
                     <a class="nav-link active; text-white; fs-5" aria-current="page" href="registroEntrada.php" id="menu">Ingreso</a>
