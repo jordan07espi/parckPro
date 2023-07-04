@@ -15,7 +15,7 @@ PARKPRO es un sistema de parqueadero receptivo diseñado para registrar y gestio
 Para ejecutar el Sistema de Parqueadero PARKPRO en su máquina local, necesita lo siguiente:
 
 - Servidor web (por ejemplo, Apache).
-- Versión de PHP 5.6 o posterior.
+- Versión de PHP 5.6 en adelante.
 - Base de datos MySQL.
 
 ## Instalación
